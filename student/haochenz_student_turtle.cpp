@@ -57,7 +57,7 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
 		ROS_INFO( "initial orentation=%f  STATE=%f", nw_or, current_state );
 		fx1	= pos_.x(); fy1 = pos_.y();
 		fx2	= pos_.x(); fy2 = pos_.y();//get current turtle position
-		ROS_INFO( "Before: fx1=%f  fy1=%f fx2=%f fy2=%f", fx1, fy1,fx2,fy2 );
+		
 		
 		if ( nw_or < 2 ){// check wall at turtle's orientation
 			if ( nw_or == 0 ){
@@ -77,64 +77,72 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
 				fy1 += 1;
 			}
 		}
-		ROS_INFO( "After:  fx1=%f  fy1=%f fx2=%f fy2=%f", fx1, fy1,fx2,fy2 );
+		
 
 		
 		
 		bp	= bumped( fx1, fy1, fx2, fy2 );
 		aend	= atend( pos_.x(), pos_.y() ); // check if the turtle reaches destination
-		ROS_INFO( "1: Orientation=%f  STATE=%f Bumped=%d", nw_or, current_state,bp );
+		
 		if ( nw_or == 0 ){
 
 			if ( current_state == 2 ){
-				nw_or = 3;  
+				//nw_or = 3;  
+				nw_or = 1;
 				current_state = 0;
 			}else if ( bp ){
-				nw_or = 1;  
+				//nw_or = 1;  
+				nw_or = 3;
 				current_state = 0;
 			}else {
 				current_state = 2;
 			}
-			ROS_INFO( "2: Orientation=%f  STATE=%f", nw_or, current_state );
+			
 		}
 		else if ( nw_or == 1 ){
 			if ( current_state == 2 ){
-				nw_or = 0; 
+				//nw_or = 0;
+				nw_or = 2; 
 				current_state = 0;
 			}else if ( bp ){
-				nw_or = 2;  
+				//nw_or = 2;  
+				nw_or = 0;
 				current_state = 0;
 			}else {
 				current_state = 2;
 			}
-			ROS_INFO( "3: Orientation=%f  STATE=%f", nw_or, current_state );
+			
 		}
 		else if ( nw_or == 2 ){
 			if ( current_state == 2 ){
-				nw_or = 1;  
+				//nw_or = 1;  
+				nw_or = 3;
 				current_state = 0;
 			}else if ( bp ){
-				nw_or = 3; 
+				//nw_or = 3;
+				nw_or = 1; 
 				current_state = 0;
 			}else {
 				current_state = 2;
 			}
-			ROS_INFO( "4: Orientation=%f  STATE=%f", nw_or, current_state );
+			
 		}
 		else if ( nw_or == 3 ){
 			if ( current_state == 2 ){
-				nw_or = 2;  
+				//nw_or = 2; 
+				nw_or = 0;   
 				current_state = 0;
 			}else if ( bp ){
-				nw_or = 0;  
+				// nw_or = 0;
+				nw_or = 2;    
 				current_state = 0;
 			}else {
 				current_state = 2;
 			}
-			ROS_INFO( "5: Orientation=%f  STATE=%f", nw_or, current_state );
+			
 		}
 
-		ROS_INFO( "6: Orientation=%f  STATE=%f", nw_or, current_state );
+		ROS_INFO( "Orientation=%f  STATE=%f", nw_or, current_state );
 		z	= current_state == 2;// when current_state is equal to 2, z = true, otherwise false
 		
 		if ( z == true && aend == false ){
