@@ -64,23 +64,45 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
         turtle_position.fx2 = pos_.x(); 
         turtle_position.fy2 = pos_.y();//get current turtle position
                 
-        if ( nw_or < 2 ){// check wall at turtle's orientation
-            if ( nw_or == 0 ){
-                turtle_position.fy2 += 1;
-            }
-            else {
-                turtle_position.fx2 += 1;
-            }
-        }
-        else{ 
+        // if ( nw_or < 2 ){// check wall at turtle's orientation
+        //     if ( nw_or == 0 ){
+        //         turtle_position.fy2 += 1;
+        //     }
+        //     else {
+        //         turtle_position.fx2 += 1;
+        //     }
+        // }
+        // else{ 
+        //     turtle_position.fx2 += 1; 
+        //     turtle_position.fy2 += 1;
+        //     if ( nw_or == 2 ){
+        //         turtle_position.fx1 += 1;
+        //     }
+        //     else {
+        //         turtle_position.fy1 += 1;
+        //     }
+        // }
+
+        switch (nw_or)
+        {
+        case 0:
+            turtle_position.fy2 += 1;
+            break;
+        case 1:
+            turtle_position.fx2 += 1;
+            break;
+        case 2:
             turtle_position.fx2 += 1; 
             turtle_position.fy2 += 1;
-            if ( nw_or == 2 ){
-                turtle_position.fx1 += 1;
-            }
-            else {
-                turtle_position.fy1 += 1;
-            }
+            turtle_position.fx1 += 1;
+            break;
+        case 3:
+            turtle_position.fx2 += 1; 
+            turtle_position.fy2 += 1;
+            turtle_position.fy1 += 1;
+            break;
+        default:
+            ROS_ERROR("check wall at turtle's orientation")
         }
         
         bp = bumped( turtle_position.fx1, turtle_position.fy1, turtle_position.fx2, turtle_position.fy2 );//check is there is a wall at turtle's orientation
@@ -88,12 +110,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
         aend = atend( pos_.x(), pos_.y() ); // check if the turtle reaches destination
         
         if ( nw_or == 0 ){
-            if ( current_state == move ){
-                //nw_or = 3;  
+            if ( current_state == move ){  
                 nw_or = 1;
                 current_state = stop;
-            }else if ( bp ){
-                //nw_or = 1;  
+            }else if ( bp ){  
                 nw_or = 3;
                 current_state = stop;
             }else {
@@ -102,11 +122,9 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
         }
         else if ( nw_or == 1 ){
             if ( current_state == move ){
-                //nw_or = 0;
                 nw_or = 2; 
                 current_state = stop;
-            }else if ( bp ){
-                //nw_or = 2;  
+            }else if ( bp ){ 
                 nw_or = 0;
                 current_state = stop;
             }else {
@@ -114,12 +132,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
             }
         }
         else if ( nw_or == 2 ){
-            if ( current_state == move ){
-                //nw_or = 1;  
+            if ( current_state == move ){  
                 nw_or = 3;
                 current_state = stop;
             }else if ( bp ){
-                //nw_or = 3;
                 nw_or = 1; 
                 current_state = stop;
             }else {
@@ -128,11 +144,9 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
         }
         else if ( nw_or == 3 ){
             if ( current_state == move ){
-                //nw_or = 2; 
                 nw_or = 0;   
                 current_state = stop;
             }else if ( bp ){
-                // nw_or = 0;
                 nw_or = 2;    
                 current_state = stop;
             }else {
