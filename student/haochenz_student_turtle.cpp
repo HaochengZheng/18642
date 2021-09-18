@@ -91,49 +91,98 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
 
         aend = atend( pos_.x(), pos_.y() ); // check if the turtle reaches destination
         
-        if ( nw_or == 0 ){
+        // if ( nw_or == 0 ){
+        //     if ( current_state == move ){  
+        //         nw_or = 1;
+        //         current_state = stop;
+        //     }else if ( bp ){  
+        //         nw_or = 3;
+        //         current_state = stop;
+        //     }else {
+        //         current_state = move;
+        //     }
+        // }
+        // else if ( nw_or == 1 ){
+        //     if ( current_state == move ){
+        //         nw_or = 2; 
+        //         current_state = stop;
+        //     }else if ( bp ){ 
+        //         nw_or = 0;
+        //         current_state = stop;
+        //     }else {
+        //         current_state = move;
+        //     }
+        // }
+        // else if ( nw_or == 2 ){
+        //     if ( current_state == move ){  
+        //         nw_or = 3;
+        //         current_state = stop;
+        //     }else if ( bp ){
+        //         nw_or = 1; 
+        //         current_state = stop;
+        //     }else {
+        //         current_state = move;
+        //     }
+        // }
+        // else if ( nw_or == 3 ){
+        //     if ( current_state == move ){
+        //         nw_or = 0;   
+        //         current_state = stop;
+        //     }else if ( bp ){
+        //         nw_or = 2;    
+        //         current_state = stop;
+        //     }else {
+        //         current_state = move;
+        //     }    
+        // }
+
+        switch (turtle_ori){ //move turtle
+        case right:
             if ( current_state == move ){  
-                nw_or = 1;
+                nw_or = down;
                 current_state = stop;
             }else if ( bp ){  
-                nw_or = 3;
+                nw_or = up;
                 current_state = stop;
             }else {
                 current_state = move;
             }
-        }
-        else if ( nw_or == 1 ){
+            break;
+        case down:
             if ( current_state == move ){
-                nw_or = 2; 
+                nw_or = left; 
                 current_state = stop;
             }else if ( bp ){ 
-                nw_or = 0;
+                nw_or = right;
                 current_state = stop;
             }else {
                 current_state = move;
             }
-        }
-        else if ( nw_or == 2 ){
+            break;
+        case left:
             if ( current_state == move ){  
-                nw_or = 3;
+                nw_or = up;
                 current_state = stop;
             }else if ( bp ){
-                nw_or = 1; 
+                nw_or = down; 
                 current_state = stop;
             }else {
                 current_state = move;
             }
-        }
-        else if ( nw_or == 3 ){
+            break;
+        case up:
             if ( current_state == move ){
-                nw_or = 0;   
+                nw_or = right;   
                 current_state = stop;
             }else if ( bp ){
-                nw_or = 2;    
+                nw_or = left;    
                 current_state = stop;
             }else {
                 current_state = move;
-            }    
+            }
+            break;
+        default:
+            ROS_ERROR("move turtle");
         }
 
         ROS_INFO( "Orientation=%f  STATE=%f", nw_or, current_state );
