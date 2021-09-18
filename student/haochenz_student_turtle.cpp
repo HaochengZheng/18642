@@ -50,15 +50,19 @@ typedef struct Position //struct for turtle position
 //     Turn 180 degrees
 
 
+
+
+
+
 bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientation
 {
-    state current_state;
+    static state current_state;
     orientation turtle_ori;
+    static check z, aend, bp;
+    static nums wait_time; // wait_time is wait time for each movement.
     Position turtle_position;
-    check z, aend, bp;
-    nums wait_time; // wait_time is wait time for each movement.
     
-    static int TIMEOUT = 40; //Timeout number
+    static int TIMEOUT = 2; //Timeout number
     turtle_ori = static_cast<orientation>(nw_or);
 
     if ( wait_time == 0 ){
