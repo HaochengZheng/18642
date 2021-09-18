@@ -4,7 +4,7 @@
  *
  * STUDENT NAME:Haocheng ZHENG
  * ANDREW ID:haochenz
- * LAST UPDATE:9/10/2021
+ * LAST UPDATE:9/17/2021
  *
  * This file is an algorithm to solve the ece642rtle maze
  * using the left-hand rule. The code is intentionaly left obfuscated.
@@ -94,10 +94,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
         switch (turtle_ori){ //decide turtle orientation
             case right:
                 if ( current_state == move ){  
-                    nw_or = down;
+                    turtle_ori = down;
                     current_state = stop;
                 }else if ( bp ){  
-                    nw_or = up;
+                    turtle_ori = up;
                     current_state = stop;
                 }else {
                     current_state = move;
@@ -105,10 +105,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
                 break;
             case down:
                 if ( current_state == move ){
-                    nw_or = left; 
+                    turtle_ori = left; 
                     current_state = stop;
                 }else if ( bp ){ 
-                    nw_or = right;
+                    turtle_ori = right;
                     current_state = stop;
                 }else {
                     current_state = move;
@@ -116,10 +116,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
                 break;
             case left:
                 if ( current_state == move ){  
-                    nw_or = up;
+                    turtle_ori = up;
                     current_state = stop;
                 }else if ( bp ){
-                    nw_or = down; 
+                    turtle_ori = down; 
                     current_state = stop;
                 }else {
                     current_state = move;
@@ -127,10 +127,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
                 break;
             case up:
                 if ( current_state == move ){
-                    nw_or = right;   
+                    turtle_ori = right;   
                     current_state = stop;
                 }else if ( bp ){
-                    nw_or = left;    
+                    turtle_ori = left;    
                     current_state = stop;
                 }else {
                     current_state = move;
