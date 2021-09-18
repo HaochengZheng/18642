@@ -23,21 +23,7 @@ turtleMove studentTurtleStep( bool bumped )
 /* OK TO MODIFY BELOW THIS LINE */
 
 //#define TIMEOUT 40    /* bigger number slows down simulation so you can see what's happening */
-typedef int nums;
-typedef bool check;
-typedef enum state{move, stop}; //should turtle move or not
-typedef enum orientation{right,down,left,up};//turtle orientation
-typedef struct Position //struct for turtle position
-{
-    int fx1, fy1, fx2, fy2;
-};
 
-state current_state;
-orientation turtle_ori;
-Position turtle_position;
-
-check z, aend, bp;
-nums wait_time; // wait_time is wait time for each movement.
 /*
  * this procedure takes the current turtle position and orientation and returns
  * true=submit changes, false=do not submit changes
@@ -57,6 +43,19 @@ nums wait_time; // wait_time is wait time for each movement.
 
 bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientation
 {
+    typedef int nums;
+    typedef bool check;
+    typedef enum state{move, stop}; //should turtle move or not
+    typedef enum orientation{right,down,left,up};//turtle orientation
+    typedef struct Position //struct for turtle position
+    {
+        int fx1, fy1, fx2, fy2;
+    };
+    state current_state;
+    orientation turtle_ori;
+    Position turtle_position;
+    check z, aend, bp;
+    nums wait_time; // wait_time is wait time for each movement.
     static int TIMEOUT = 40; //Timeout number
     turtle_ori = static_cast<orientation>(nw_or);
 
