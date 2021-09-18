@@ -67,141 +67,100 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
         turtle_position.fy2 = pos_.y();//get current turtle position
 
         switch (turtle_ori){ //check wall at turtle's orientation
-        case right:
-            turtle_position.fy2 += 1;
-            break;
-        case down:
-            turtle_position.fx2 += 1;
-            break;
-        case left:
-            turtle_position.fx2 += 1; 
-            turtle_position.fy2 += 1;
-            turtle_position.fx1 += 1;
-            break;
-        case up:
-            turtle_position.fx2 += 1; 
-            turtle_position.fy2 += 1;
-            turtle_position.fy1 += 1;
-            break;
-        default:
-            ROS_ERROR("check wall at turtle's orientation");
+            case right:
+                turtle_position.fy2 += 1;
+                break;
+            case down:
+                turtle_position.fx2 += 1;
+                break;
+            case left:
+                turtle_position.fx2 += 1; 
+                turtle_position.fy2 += 1;
+                turtle_position.fx1 += 1;
+                break;
+            case up:
+                turtle_position.fx2 += 1; 
+                turtle_position.fy2 += 1;
+                turtle_position.fy1 += 1;
+                break;
+            default:
+                ROS_ERROR("check wall at turtle's orientation");
         }
         
         bp = bumped( turtle_position.fx1, turtle_position.fy1, turtle_position.fx2, turtle_position.fy2 );//check is there is a wall at turtle's orientation
 
         aend = atend( pos_.x(), pos_.y() ); // check if the turtle reaches destination
         
-        // if ( nw_or == 0 ){
-        //     if ( current_state == move ){  
-        //         nw_or = 1;
-        //         current_state = stop;
-        //     }else if ( bp ){  
-        //         nw_or = 3;
-        //         current_state = stop;
-        //     }else {
-        //         current_state = move;
-        //     }
-        // }
-        // else if ( nw_or == 1 ){
-        //     if ( current_state == move ){
-        //         nw_or = 2; 
-        //         current_state = stop;
-        //     }else if ( bp ){ 
-        //         nw_or = 0;
-        //         current_state = stop;
-        //     }else {
-        //         current_state = move;
-        //     }
-        // }
-        // else if ( nw_or == 2 ){
-        //     if ( current_state == move ){  
-        //         nw_or = 3;
-        //         current_state = stop;
-        //     }else if ( bp ){
-        //         nw_or = 1; 
-        //         current_state = stop;
-        //     }else {
-        //         current_state = move;
-        //     }
-        // }
-        // else if ( nw_or == 3 ){
-        //     if ( current_state == move ){
-        //         nw_or = 0;   
-        //         current_state = stop;
-        //     }else if ( bp ){
-        //         nw_or = 2;    
-        //         current_state = stop;
-        //     }else {
-        //         current_state = move;
-        //     }    
-        // }
-
-        switch (turtle_ori){ //move turtle
-        case right:
-            if ( current_state == move ){  
-                nw_or = down;
-                current_state = stop;
-            }else if ( bp ){  
-                nw_or = up;
-                current_state = stop;
-            }else {
-                current_state = move;
-            }
-            break;
-        case down:
-            if ( current_state == move ){
-                nw_or = left; 
-                current_state = stop;
-            }else if ( bp ){ 
-                nw_or = right;
-                current_state = stop;
-            }else {
-                current_state = move;
-            }
-            break;
-        case left:
-            if ( current_state == move ){  
-                nw_or = up;
-                current_state = stop;
-            }else if ( bp ){
-                nw_or = down; 
-                current_state = stop;
-            }else {
-                current_state = move;
-            }
-            break;
-        case up:
-            if ( current_state == move ){
-                nw_or = right;   
-                current_state = stop;
-            }else if ( bp ){
-                nw_or = left;    
-                current_state = stop;
-            }else {
-                current_state = move;
-            }
-            break;
-        default:
-            ROS_ERROR("move turtle");
+        switch (turtle_ori){ //decide turtle orientation
+            case right:
+                if ( current_state == move ){  
+                    nw_or = down;
+                    current_state = stop;
+                }else if ( bp ){  
+                    nw_or = up;
+                    current_state = stop;
+                }else {
+                    current_state = move;
+                }
+                break;
+            case down:
+                if ( current_state == move ){
+                    nw_or = left; 
+                    current_state = stop;
+                }else if ( bp ){ 
+                    nw_or = right;
+                    current_state = stop;
+                }else {
+                    current_state = move;
+                }
+                break;
+            case left:
+                if ( current_state == move ){  
+                    nw_or = up;
+                    current_state = stop;
+                }else if ( bp ){
+                    nw_or = down; 
+                    current_state = stop;
+                }else {
+                    current_state = move;
+                }
+                break;
+            case up:
+                if ( current_state == move ){
+                    nw_or = right;   
+                    current_state = stop;
+                }else if ( bp ){
+                    nw_or = left;    
+                    current_state = stop;
+                }else {
+                    current_state = move;
+                }
+                break;
+            default:
+                ROS_ERROR("decide turtle orientation");
         }
 
         ROS_INFO( "Orientation=%f  STATE=%f", nw_or, current_state );
         z = current_state == move;// when current_state is equal to 2, z = true, otherwise false
         
         if ( z == true && aend == false ){// if turtle can move, move
-            if ( nw_or == 1 ){//move down
-                pos_.setY( pos_.y() - 1 );
+            switch (turtle_ori){ //move turtle
+                case right:
+                    pos_.setX( pos_.x() - 1 );
+                    break;
+                case down:
+                    pos_.setY( pos_.y() - 1 );
+                    break;
+                case left:
+                    pos_.setX( pos_.x() + 1 );
+                    break;
+                case up:
+                    pos_.setY( pos_.y() + 1 );
+                    break;
+                default:
+                    ROS_ERROR("move turtle");
             }
-            if ( nw_or == 2 ){//move left
-                pos_.setX( pos_.x() + 1 );
-            }
-            if ( nw_or == 3 ){//move up
-                pos_.setY( pos_.y() + 1 );
-            }
-            if ( nw_or == 0 ){//move right
-                pos_.setX( pos_.x() - 1 );
-            }
-            z    = false;
+            z = false;
         }
     }
     if ( aend ){// reaches destination. stop moving
