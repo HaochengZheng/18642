@@ -94,10 +94,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
         switch (turtle_ori){ //decide turtle orientation
             case right:
                 if ( current_state == move ){  
-                    turtle_ori = down;
+                    nw_or = down;
                     current_state = stop;
                 }else if ( bp ){  
-                    turtle_ori = up;
+                    nw_or = up;
                     current_state = stop;
                 }else {
                     current_state = move;
@@ -105,10 +105,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
                 break;
             case down:
                 if ( current_state == move ){
-                    turtle_ori = left; 
+                    nw_or = left; 
                     current_state = stop;
                 }else if ( bp ){ 
-                    turtle_ori = right;
+                    nw_or = right;
                     current_state = stop;
                 }else {
                     current_state = move;
@@ -116,10 +116,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
                 break;
             case left:
                 if ( current_state == move ){  
-                    turtle_ori = up;
+                    nw_or = up;
                     current_state = stop;
                 }else if ( bp ){
-                    turtle_ori = down; 
+                    nw_or = down; 
                     current_state = stop;
                 }else {
                     current_state = move;
@@ -127,10 +127,10 @@ bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientati
                 break;
             case up:
                 if ( current_state == move ){
-                    turtle_ori = right;   
+                    nw_or = right;   
                     current_state = stop;
                 }else if ( bp ){
-                    turtle_ori = left;    
+                    nw_or = left;    
                     current_state = stop;
                 }else {
                     current_state = move;
