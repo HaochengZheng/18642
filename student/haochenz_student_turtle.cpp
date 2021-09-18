@@ -16,17 +16,26 @@
 /* Ignore this line until project 5 */
 turtleMove studentTurtleStep( bool bumped )
 {
-	return(MOVE);
+    return(MOVE);
 }
 
 
 /* OK TO MODIFY BELOW THIS LINE */
 
-#define TIMEOUT 40    /* bigger number slows down simulation so you can see what's happening */
-float	w; // w is wait time for each movement.
-float 	current_state; //should turtle move or not
-float	fx1, fy1, fx2, fy2;
-float	z, aend, bp;
+//#define TIMEOUT 40    /* bigger number slows down simulation so you can see what's happening */
+typedef int nums;
+nums wait_time; // wait_time is wait time for each movement.
+typedef enum state{move, stop}; //should turtle move or not
+
+//nums fx1, fy1, fx2, fy2;
+
+typedef struct Position //struct for turtle position
+{
+    int fx1, fy1, fx2, fy2;
+};
+
+
+nums z, aend, bp;
 
 /*
  * this procedure takes the current turtle position and orientation and returns
@@ -45,134 +54,124 @@ float	z, aend, bp;
 //     Turn 180 degrees
 
 
-
-
-
 bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientation
 {
-	//ROS_INFO( "Turtle update Called  w=%f", w );
-	
-	
-	if ( w == 0 ){
-		ROS_INFO( "initial orentation=%f  STATE=%f", nw_or, current_state );
-		fx1	= pos_.x(); fy1 = pos_.y();
-		fx2	= pos_.x(); fy2 = pos_.y();//get current turtle position
-		
-		
-		if ( nw_or < 2 ){// check wall at turtle's orientation
-			if ( nw_or == 0 ){
-				fy2 += 1;
-			}
-			else {
-				fx2 += 1;
-			}
-		}
-		else{ 
-			fx2 += 1; fy2 += 1;
+    static int TIMEOUT = 40; //Timeout number
+    state current_state;
+    Position turtle_position;
 
-			if ( nw_or == 2 ){
-				fx1 += 1;
-			}
-			else {
-				fy1 += 1;
-			}
-		}
-		
+    if ( wait_time == 0 ){
+        turtle_position.fx1 = pos_.x(); 
+        turtle_position.fy1 = pos_.y();
+        turtle_position.fx2 = pos_.x(); 
+        turtle_position.fy2 = pos_.y();//get current turtle position
+                
+        if ( nw_or < 2 ){// check wall at turtle's orientation
+            if ( nw_or == 0 ){
+                turtle_position.fy2 += 1;
+            }
+            else {
+                turtle_position.fx2 += 1;
+            }
+        }
+        else{ 
+            turtle_position.fx2 += 1; 
+            turtle_position.fy2 += 1;
+            if ( nw_or == 2 ){
+                turtle_position.fx1 += 1;
+            }
+            else {
+                turtle_position.fy1 += 1;
+            }
+        }
+        
+        bp = bumped( turtle_position.fx1, turtle_position.fy1, turtle_position.fx2, turtle_position.fy2 );//check is there is a wall at turtle's orientation
 
-		
-		
-		bp	= bumped( fx1, fy1, fx2, fy2 );
-		aend	= atend( pos_.x(), pos_.y() ); // check if the turtle reaches destination
-		
-		if ( nw_or == 0 ){
+        aend = atend( pos_.x(), pos_.y() ); // check if the turtle reaches destination
+        
+        if ( nw_or == 0 ){
+            if ( current_state == move ){
+                //nw_or = 3;  
+                nw_or = 1;
+                current_state = stop;
+            }else if ( bp ){
+                //nw_or = 1;  
+                nw_or = 3;
+                current_state = stop;
+            }else {
+                current_state = move;
+            }
+        }
+        else if ( nw_or == 1 ){
+            if ( current_state == move ){
+                //nw_or = 0;
+                nw_or = 2; 
+                current_state = stop;
+            }else if ( bp ){
+                //nw_or = 2;  
+                nw_or = 0;
+                current_state = stop;
+            }else {
+                current_state = move;
+            }
+        }
+        else if ( nw_or == 2 ){
+            if ( current_state == move ){
+                //nw_or = 1;  
+                nw_or = 3;
+                current_state = stop;
+            }else if ( bp ){
+                //nw_or = 3;
+                nw_or = 1; 
+                current_state = stop;
+            }else {
+                current_state = move;
+            }
+        }
+        else if ( nw_or == 3 ){
+            if ( current_state == move ){
+                //nw_or = 2; 
+                nw_or = 0;   
+                current_state = stop;
+            }else if ( bp ){
+                // nw_or = 0;
+                nw_or = 2;    
+                current_state = stop;
+            }else {
+                current_state = move;
+            }    
+        }
 
-			if ( current_state == 2 ){
-				//nw_or = 3;  
-				nw_or = 1;
-				current_state = 0;
-			}else if ( bp ){
-				//nw_or = 1;  
-				nw_or = 3;
-				current_state = 0;
-			}else {
-				current_state = 2;
-			}
-			
-		}
-		else if ( nw_or == 1 ){
-			if ( current_state == 2 ){
-				//nw_or = 0;
-				nw_or = 2; 
-				current_state = 0;
-			}else if ( bp ){
-				//nw_or = 2;  
-				nw_or = 0;
-				current_state = 0;
-			}else {
-				current_state = 2;
-			}
-			
-		}
-		else if ( nw_or == 2 ){
-			if ( current_state == 2 ){
-				//nw_or = 1;  
-				nw_or = 3;
-				current_state = 0;
-			}else if ( bp ){
-				//nw_or = 3;
-				nw_or = 1; 
-				current_state = 0;
-			}else {
-				current_state = 2;
-			}
-			
-		}
-		else if ( nw_or == 3 ){
-			if ( current_state == 2 ){
-				//nw_or = 2; 
-				nw_or = 0;   
-				current_state = 0;
-			}else if ( bp ){
-				// nw_or = 0;
-				nw_or = 2;    
-				current_state = 0;
-			}else {
-				current_state = 2;
-			}
-			
-		}
-
-		ROS_INFO( "Orientation=%f  STATE=%f", nw_or, current_state );
-		z	= current_state == 2;// when current_state is equal to 2, z = true, otherwise false
-		
-		if ( z == true && aend == false ){
-			if ( nw_or == 1 ){//move down
-				pos_.setY( pos_.y() - 1 );
-			}
-			if ( nw_or == 2 ){//move left
-				pos_.setX( pos_.x() + 1 );
-			}
-			if ( nw_or == 3 ){//move up
-				pos_.setY( pos_.y() + 1 );
-			}
-			if ( nw_or == 0 ){//move right
-				pos_.setX( pos_.x() - 1 );
-			}
-			z	= false;
-		}
-		ROS_INFO( "7: Orientation=%f  STATE=%f", nw_or, current_state );
-	}
-	if ( aend ){// reaches destination. stop moving
-		return(false);
-	}
-	if ( w == 0 ){
-		w = TIMEOUT;
-	}
-	else {
-		w -= 1;
-	}
-	if ( w == TIMEOUT ){
-		return(true);
-	}
-	return(false);
+        ROS_INFO( "Orientation=%f  STATE=%f", nw_or, current_state );
+        z = current_state == move;// when current_state is equal to 2, z = true, otherwise false
+        
+        if ( z == true && aend == false ){// if turtle can move, move
+            if ( nw_or == 1 ){//move down
+                pos_.setY( pos_.y() - 1 );
+            }
+            if ( nw_or == 2 ){//move left
+                pos_.setX( pos_.x() + 1 );
+            }
+            if ( nw_or == 3 ){//move up
+                pos_.setY( pos_.y() + 1 );
+            }
+            if ( nw_or == 0 ){//move right
+                pos_.setX( pos_.x() - 1 );
+            }
+            z    = false;
+        }
+    }
+    if ( aend ){// reaches destination. stop moving
+        return(false);
+    }
+    if ( wait_time == 0 ){
+        wait_time = TIMEOUT;
+    }
+    else {
+        wait_time -= 1;
+    }
+    if ( wait_time == TIMEOUT ){
+        return(true);
+    }
+    return(false);
 }
