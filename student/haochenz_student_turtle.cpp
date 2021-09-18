@@ -26,12 +26,14 @@ turtleMove studentTurtleStep( bool bumped )
 typedef int nums;
 typedef bool check;
 typedef enum state{move, stop}; //should turtle move or not
+typedef enum orientation{right,down,left,up};//turtle orientation
 typedef struct Position //struct for turtle position
 {
     int fx1, fy1, fx2, fy2;
 };
 
 state current_state;
+orientation turtle_ori;
 Position turtle_position;
 
 check z, aend, bp;
@@ -56,53 +58,33 @@ nums wait_time; // wait_time is wait time for each movement.
 bool studentMoveTurtle( QPointF & pos_, int & nw_or )//nw_or is turtle orientation
 {
     static int TIMEOUT = 40; //Timeout number
-    
+    turtle_ori = static_cast<orientation>(nw_or);
 
     if ( wait_time == 0 ){
         turtle_position.fx1 = pos_.x(); 
         turtle_position.fy1 = pos_.y();
         turtle_position.fx2 = pos_.x(); 
         turtle_position.fy2 = pos_.y();//get current turtle position
-                
-        // if ( nw_or < 2 ){// check wall at turtle's orientation
-        //     if ( nw_or == 0 ){
-        //         turtle_position.fy2 += 1;
-        //     }
-        //     else {
-        //         turtle_position.fx2 += 1;
-        //     }
-        // }
-        // else{ 
-        //     turtle_position.fx2 += 1; 
-        //     turtle_position.fy2 += 1;
-        //     if ( nw_or == 2 ){
-        //         turtle_position.fx1 += 1;
-        //     }
-        //     else {
-        //         turtle_position.fy1 += 1;
-        //     }
-        // }
 
-        switch (nw_or)
-        {
-        case 0:
+        switch (turtle_ori){ //check wall at turtle's orientation
+        case right:
             turtle_position.fy2 += 1;
             break;
-        case 1:
+        case down:
             turtle_position.fx2 += 1;
             break;
-        case 2:
+        case left:
             turtle_position.fx2 += 1; 
             turtle_position.fy2 += 1;
             turtle_position.fx1 += 1;
             break;
-        case 3:
+        case up:
             turtle_position.fx2 += 1; 
             turtle_position.fy2 += 1;
             turtle_position.fy1 += 1;
             break;
         default:
-            ROS_ERROR("check wall at turtle's orientation")
+            ROS_ERROR("check wall at turtle's orientation");
         }
         
         bp = bumped( turtle_position.fx1, turtle_position.fy1, turtle_position.fx2, turtle_position.fy2 );//check is there is a wall at turtle's orientation
